@@ -1,4 +1,3 @@
-
 import { Check, MoveRight, PhoneCall } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -32,7 +31,7 @@ export const Pricing = () => (
                 </span>
               </CardTitle>
               <CardDescription>
-                'Perfect for trying out Pyrion AI'.
+                &apos;Perfect for trying out Pyrion AI&apos;.
               </CardDescription>
             </CardHeader>
             <CardContent>

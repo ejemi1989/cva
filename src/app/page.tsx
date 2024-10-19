@@ -78,7 +78,7 @@ export default async function Home() {
         <h2 className="text-4xl text-center">Choose what fits you right</h2>
         <p className="text-muted-foreground text-center max-w-lg">
           Our straightforward pricing plans are tailored to meet your needs. If
-          {" you're"} not ready to commit you can get started for free.
+          {" you&apos;re"} not ready to commit you can get started for free.
         </p>
      
       

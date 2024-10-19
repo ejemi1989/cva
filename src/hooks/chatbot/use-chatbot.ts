@@ -104,7 +104,7 @@ export const useChatBot = () => {
         limitRequest++
       }
     })
-  }, [])
+  }, [limitRequest]) // Added 'limitRequest' to the dependency array
 
   const onStartChatting = handleSubmit(async (values) => {
     console.log('ALL VALUES', values)
@@ -230,5 +230,5 @@ export const useRealTime = (
       pusherClient.unbind('realtime-mode')
       pusherClient.unsubscribe(chatRoom)
     }
-  }, [])
+  }, [chatRoom, setChats]) // Added 'chatRoom' and 'setChats' to the dependency array
 }

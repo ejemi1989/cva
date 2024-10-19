@@ -194,7 +194,7 @@ export const useHelpDesk = (id: string) => {
 
   useEffect(() => {
     onGetQuestions()
-  }, [])
+  }, [onGetQuestions]); // Added 'onGetQuestions' to dependencies
 
   return {
     register,
@@ -245,7 +245,7 @@ export const useFilterQuestions = (id: string) => {
 
   useEffect(() => {
     onGetQuestions()
-  }, [])
+  }, [onGetQuestions]); // Added 'onGetQuestions' to dependencies
 
   return {
     loading,

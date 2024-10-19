@@ -2,7 +2,7 @@
 import { useToast } from '@/components/ui/use-toast'
 import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useChatContext } from './user-chat-context'
 import { onGetConversationMode, onToggleRealtime } from '@/actions/conversation'
 import { useClerk } from '@clerk/nextjs'
@@ -35,20 +35,20 @@ const useSideBar = () => {
     }
   }
 
-  const onGetCurrentMode = async () => {
+  const onGetCurrentMode = useCallback(async () => {
     setLoading(true)
     const mode = await onGetConversationMode(chatRoom!)
     if (mode) {
       setRealtime(mode.live)
       setLoading(false)
     }
-  }
+  }, [chatRoom]); // Ensure chatRoom is included as a dependency
 
   useEffect(() => {
     if (chatRoom) {
-      onGetCurrentMode()
+      onGetCurrentMode() // This will call the memoized function
     }
-  }, [chatRoom])
+  }, [onGetCurrentMode]); // Added 'onGetCurrentMode' to dependencies
 
   const page = pathname.split('/').pop()
   const { signOut } = useClerk()

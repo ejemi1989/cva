@@ -60,7 +60,7 @@ const PortalForm = ({
     if (questions.every((question) => question.answered)) {
       onNext()
     }
-  }, [])
+  }, [onNext, questions]); // Added 'onNext' and 'questions' to dependencies
 
   return (
     <form

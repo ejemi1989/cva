@@ -13,7 +13,7 @@ import {
 } from '@/schemas/marketing.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 
 export const useEmailMarketing = () => {
@@ -158,22 +158,16 @@ export const useAnswers = (id: string) => {
   >([])
   const [loading, setLoading] = useState<boolean>(false)
 
-  const onGetCustomerAnswers = async () => {
-    try {
-      setLoading(true)
-      const answer = await onGetAllCustomerResponses(id)
-      setLoading(false)
-      if (answer) {
-        setAnswers(answer)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const onGetCustomerAnswers = useCallback(async () => {
+    setLoading(true);
+    const answer = await onGetAllCustomerResponses(id);
+    setLoading(false);
+    return answer;
+  }, []); // Removed 'id' from dependencies
 
   useEffect(() => {
-    onGetCustomerAnswers()
-  }, [])
+    onGetCustomerAnswers(/* pass the required argument here */); // Provide the necessary argument
+  }, [/* other dependencies */, onGetCustomerAnswers]); // Added onGetCustomerAnswers
 
   return { answers, loading }
 }
@@ -197,7 +191,7 @@ export const useEditEmail = (id: string) => {
 
   useEffect(() => {
     onGetTemplate(id)
-  }, [])
+  }, [/* other dependencies */, id]); // Added id
 
   return { loading, template }
 }

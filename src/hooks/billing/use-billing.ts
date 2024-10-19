@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import {
   onCreateCustomerPaymentIntentSecret,
   onGetStripeClientSecret,
@@ -37,22 +37,17 @@ export const useStripeCustomer = (amount: number, stripeId: string) => {
   const [stripeSecret, setStripeSecret] = useState<string>('')
   const [loadForm, setLoadForm] = useState<boolean>(false)
 
-  const onGetCustomerIntent = async (amount: number) => {
-    try {
-      setLoadForm(true)
-      const intent = await onCreateCustomerPaymentIntentSecret(amount, stripeId)
-      if (intent) {
-        setLoadForm(false)
-        setStripeSecret(intent.secret!)
-      }
-    } catch (error) {
-      console.log(error)
+  const onGetCustomerIntent = useCallback(async () => {
+    setLoadForm(true)
+    const intent = await onCreateCustomerPaymentIntentSecret(amount, stripeId)
+    if (intent) {
+      setLoadForm(false)
     }
-  }
+  }, [amount, stripeId]) // Dependencies for useCallback
 
   useEffect(() => {
-    onGetCustomerIntent(amount)
-  }, [amount, onGetCustomerIntent]); // Added missing dependencies
+    onGetCustomerIntent()
+  }, [onGetCustomerIntent, amount]); // Include amount in the dependency array
 
   return { stripeSecret, loadForm }
 }
@@ -107,7 +102,7 @@ export const useSubscriptions = (plan: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
   const [loading, setLoading] = useState<boolean>(false)
   const [payment, setPayment] = useState<'STANDARD' | 'PRO' | 'ULTIMATE'>(plan)
   const { toast } = useToast()
-  router = useRouter()
+  const router = useRouter()
   const onUpdatetToFreTier = async () => {
     try {
       setLoading(true)
