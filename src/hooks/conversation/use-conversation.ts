@@ -74,46 +74,46 @@ export const useConversation = () => {
 }
 
 export const useChatTime = (createdAt: Date, roomId: string) => {
-  const { chatRoom } = useChatContext()
-  const [messageSentAt, setMessageSentAt] = useState<string>()
-  const [urgent, setUrgent] = useState<boolean>(false)
+  const { chatRoom } = useChatContext();
+  const [messageSentAt, setMessageSentAt] = useState<string>();
+  const [urgent, setUrgent] = useState<boolean>(false);
 
   const onSetMessageRecievedDate = useCallback(() => {
-    const dt = new Date(createdAt)
-    const current = new Date()
-    const currentDate = current.getDate()
-    const hr = dt.getHours()
-    const min = dt.getMinutes()
-    const date = dt.getDate()
-    const month = dt.getMonth()
-    const difference = currentDate - date
+    const dt = new Date(createdAt);
+    const current = new Date();
+    const currentDate = current.getDate();
+    const hr = dt.getHours();
+    const min = dt.getMinutes();
+    const date = dt.getDate();
+    const month = dt.getMonth();
+    const difference = currentDate - date;
 
     if (difference <= 0) {
-      setMessageSentAt(`${hr}:${min}${hr > 12 ? 'PM' : 'AM'}`)
+      setMessageSentAt(`${hr}:${min}${hr > 12 ? 'PM' : 'AM'}`);
       if (current.getHours() - dt.getHours() < 2) {
-        setUrgent(true)
+        setUrgent(true);
       }
     } else {
-      setMessageSentAt(`${date} ${getMonthName(month)}`)
+      setMessageSentAt(`${date} ${getMonthName(month)}`);
     }
-  }
+  }, [createdAt]); // Ensure createdAt is included in the dependencies
 
+  // Ensure this function is properly closed
   const onSeenChat = useCallback(async () => {
     if (chatRoom == roomId && urgent) {
       await onViewUnReadMessages(roomId);
     }
-    // ... existing code ...
   }, [chatRoom, roomId, urgent]); // Ensure dependencies are included
 
   useEffect(() => {
-    onSeenChat()
+    onSeenChat();
   }, [chatRoom, onSeenChat]); // Added onSeenChat to the dependency array
 
   useEffect(() => {
-    onSetMessageRecievedDate()
+    onSetMessageRecievedDate();
   }, [onSetMessageRecievedDate]); // Added onSetMessageRecievedDate to the dependency array
 
-  return { messageSentAt, urgent, onSeenChat }
+  return { messageSentAt, urgent, onSeenChat };
 }
 
 export const useChatWindow = () => {
