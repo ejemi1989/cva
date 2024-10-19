@@ -52,7 +52,7 @@ export const useStripeCustomer = (amount: number, stripeId: string) => {
 
   useEffect(() => {
     onGetCustomerIntent(amount)
-  }, [])
+  }, [amount, onGetCustomerIntent]); // Added missing dependencies
 
   return { stripeSecret, loadForm }
 }
@@ -107,7 +107,7 @@ export const useSubscriptions = (plan: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
   const [loading, setLoading] = useState<boolean>(false)
   const [payment, setPayment] = useState<'STANDARD' | 'PRO' | 'ULTIMATE'>(plan)
   const { toast } = useToast()
-  const router = useRouter()
+  router = useRouter()
   const onUpdatetToFreTier = async () => {
     try {
       setLoading(true)
