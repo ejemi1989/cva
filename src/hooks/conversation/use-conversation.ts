@@ -36,6 +36,7 @@ export const useConversation = () => {
     }[]
   >([])
   const [loading, setLoading] = useState<boolean>(false)
+
   useEffect(() => {
     const search = watch(async (value) => {
       setLoading(true)
@@ -65,6 +66,7 @@ export const useConversation = () => {
       console.log(error)
     }
   }
+
   return {
     register,
     chatRooms,
@@ -96,22 +98,21 @@ export const useChatTime = (createdAt: Date, roomId: string) => {
     } else {
       setMessageSentAt(`${date} ${getMonthName(month)}`);
     }
-  }, [createdAt]); // Ensure createdAt is included in the dependencies
+  }, [createdAt]);
 
-  // Ensure this block is properly closed
-  const onSeenChat = useCallback(async () => { // Correctly placed function declaration
+  const onSeenChat = useCallback(async () => {
     if (chatRoom == roomId && urgent) {
       await onViewUnReadMessages(roomId);
     }
-  }, [chatRoom, roomId, urgent]); // Ensure dependencies are included
+  }, [chatRoom, roomId, urgent]);
 
   useEffect(() => {
     onSeenChat();
-  }, [chatRoom, onSeenChat]); // Added onSeenChat to the dependency array
+  }, [chatRoom, onSeenChat]);
 
   useEffect(() => {
     onSetMessageRecievedDate();
-  }, [onSetMessageRecievedDate]); // Added onSetMessageRecievedDate to the dependency array
+  }, [onSetMessageRecievedDate]);
 
   return { messageSentAt, urgent, onSeenChat };
 }
@@ -123,6 +124,7 @@ export const useChatWindow = () => {
     resolver: zodResolver(ChatBotMessageSchema),
     mode: 'onChange',
   })
+
   const onScrollToBottom = () => {
     messageWindowRef.current?.scroll({
       top: messageWindowRef.current.scrollHeight,
@@ -147,7 +149,7 @@ export const useChatWindow = () => {
         pusherClient.unsubscribe(chatRoom)
       }
     }
-  }, [chatRoom, setChats]) // Added setChats to the dependency array
+  }, [chatRoom, setChats])
 
   const onHandleSentMessage = handleSubmit(async (values) => {
     try {
@@ -157,11 +159,7 @@ export const useChatWindow = () => {
         values.content,
         'assistant'
       )
-      //WIP: Remove this line
       if (message) {
-        //remove this
-        // setChats((prev) => [...prev, message.message[0]])
-
         await onRealTimeChat(
           chatRoom!,
           message.message[0].message,
