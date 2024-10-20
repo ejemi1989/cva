@@ -76,48 +76,46 @@ export const useConversation = () => {
 }
 
 export const useChatTime = (createdAt: Date, roomId: string) => {
-  const { chatRoom } = useChatContext();
-  const [messageSentAt, setMessageSentAt] = useState<string>();
-  const [urgent, setUrgent] = useState<boolean>(false);
+  const { chatRoom } = useChatContext()
+  const [messageSentAt, setMessageSentAt] = useState<string>()
+  const [urgent, setUrgent] = useState<boolean>(false)
 
   const onSetMessageRecievedDate = useCallback(() => {
-    const dt = new Date(createdAt);
-    const current = new Date();
-    const currentDate = current.getDate();
-    const hr = dt.getHours();
-    const min = dt.getMinutes();
-    const date = dt.getDate();
-    const month = dt.getMonth();
-    const difference = currentDate - date;
+    const dt = new Date(createdAt)
+    const current = new Date()
+    const currentDate = current.getDate()
+    const hr = dt.getHours()
+    const min = dt.getMinutes()
+    const date = dt.getDate()
+    const month = dt.getMonth()
+    const difference = currentDate - date
 
     if (difference <= 0) {
-      setMessageSentAt(`${hr}:${min}${hr > 12 ? 'PM' : 'AM'}`);
+      setMessageSentAt(`${hr}:${min}${hr > 12 ? 'PM' : 'AM'}`)
       if (current.getHours() - dt.getHours() < 2) {
-        setUrgent(true);
+        setUrgent(true)
       }
     } else {
-      setMessageSentAt(`${date} ${getMonthName(month)}`);
+      setMessageSentAt(`${date} ${getMonthName(month)}`)
     }
-  }, [createdAt]);
+  }, [createdAt])
 
   const onSeenChat = useCallback(async () => {
     if (chatRoom === roomId && urgent) {
-      await onViewUnReadMessages(roomId);
+      await onViewUnReadMessages(roomId)
     }
-  }, [chatRoom, roomId, urgent]);
+  }, [chatRoom, roomId, urgent])
 
   useEffect(() => {
-    onSeenChat();
-  }, [chatRoom, onSeenChat]);
+    onSeenChat()
+  }, [chatRoom, onSeenChat])
 
   useEffect(() => {
-    onSetMessageRecievedDate();
-  }, [onSetMessageRecievedDate]);
+    onSetMessageRecievedDate()
+  }, [onSetMessageRecievedDate])
 
-  return { messageSentAt, urgent, onSeenChat };
-};
-
-
+  return { messageSentAt, urgent, onSeenChat }
+}
 
 export const useChatWindow = () => {
   const { chats, loading, setChats, chatRoom } = useChatContext()
