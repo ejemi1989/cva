@@ -147,7 +147,7 @@ export const useChatWindow = () => {
         pusherClient.unsubscribe(chatRoom)
       }
     }
-  }, [chatRoom])
+  }, [chatRoom, setChats]) // Added setChats to the dependency array
 
   const onHandleSentMessage = handleSubmit(async (values) => {
     try {
