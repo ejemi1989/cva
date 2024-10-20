@@ -99,11 +99,11 @@ export const useChatTime = (createdAt: Date, roomId: string) => {
   }, [createdAt]); // Ensure createdAt is included in the dependencies
 
   // Ensure this block is properly closed
-  const onSeenChat = useCallback(async () => {
+  const onSeenChat = useCallback(async () => { // Fixed syntax error
     if (chatRoom == roomId && urgent) {
       await onViewUnReadMessages(roomId);
     }
-  }, [chatRoom, roomId, urgent]); // Ensure dependencies are correctly listed
+  }, [chatRoom, roomId, urgent]); // Ensure dependencies are included
 
   useEffect(() => {
     onSeenChat();
