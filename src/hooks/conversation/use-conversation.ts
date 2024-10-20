@@ -99,7 +99,7 @@ export const useChatTime = (createdAt: Date, roomId: string) => {
   }, [createdAt]); // Ensure createdAt is included in the dependencies
 
   // Ensure this block is properly closed
-  const onSeenChat = useCallback(async () => { // Fixed syntax error
+  const onSeenChat = useCallback(async () => { // Correctly placed function declaration
     if (chatRoom == roomId && urgent) {
       await onViewUnReadMessages(roomId);
     }
