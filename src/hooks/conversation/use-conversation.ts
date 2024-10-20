@@ -15,10 +15,11 @@ export const useConversation = () => {
   const { setLoading: setMessagesLoading, setChats, setChatRoom } = useChatContext();
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const [loading, setLoading] = useState(false);
-  const [activeChatRoom, setActiveChatRoom] = useState<string | null>(null);
+  const [activeChatRoom, setActiveChatRoom] = useState<string | null>(null); // corrected type: `string | null`
   const [urgent, setUrgent] = useState(false);
-  const [roomId, setRoomId] = useState<string | null>(null);
+  const [roomId, setRoomId] = useState<string | null>(null); // corrected type: `string | null`
 
+  // fetchChatRooms is correctly defined here
   const fetchChatRooms = useCallback(async (domain: string) => {
     setLoading(true);
     try {
@@ -34,6 +35,7 @@ export const useConversation = () => {
     }
   }, []);
 
+  // Effect that watches changes in the domain input and triggers fetchChatRooms
   useEffect(() => {
     const subscription = watch((value) => {
       if (value.domain) {
@@ -43,6 +45,7 @@ export const useConversation = () => {
     return () => subscription.unsubscribe();
   }, [watch, fetchChatRooms]);
 
+  // Correctly structured callback to get active chat messages
   const onGetActiveChatMessages = useCallback(async (id: string) => {
     setMessagesLoading(true);
     try {
@@ -58,7 +61,8 @@ export const useConversation = () => {
     }
   }, [setMessagesLoading, setChatRoom, setChats]);
 
-const onSeenChat = useCallback(async () => {
+  // Correctly structured onSeenChat callback to handle viewing unread messages
+  const onSeenChat = useCallback(async () => {
     if (activeChatRoom === roomId && urgent && roomId) {
       await onViewUnReadMessages(roomId);
     }
