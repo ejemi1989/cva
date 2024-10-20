@@ -58,7 +58,7 @@ export const useConversation = () => {
     }
   }, [setMessagesLoading, setChatRoom, setChats]);
 
-  const onSeenChat = useCallback(async () => {
+  Const onSeenChat = useCallback(async () => {
     if (activeChatRoom === roomId && urgent && roomId) {
       await onViewUnReadMessages(roomId);
     }
