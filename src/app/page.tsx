@@ -167,7 +167,7 @@ export default async function Home() {
       <AccordionItem value="item-3">
         <AccordionTrigger>Can I customize Pyrion AI’s responses?</AccordionTrigger>
         <AccordionContent>
-        Yes, you can tailor its dialogue to match your brand's tone and voice.
+        Yes, you can tailor its dialogue to match your brand&apos;s tone and voice.
         </AccordionContent>
       </AccordionItem>
 
