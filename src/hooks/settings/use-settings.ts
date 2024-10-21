@@ -234,14 +234,22 @@ export const useFilterQuestions = (id: string) => {
     }
   })
 
+<<<<<<< HEAD
   const onGetQuestions = useCallback(() => {
+=======
+  const onGetQuestions = useCallback(async () => {
+>>>>>>> bb2951e21cbf5c1c2a6d6af56dce323035bb7dbb
     setLoading(true)
     const questions = await onGetAllFilterQuestions(id)
     if (questions) {
       setIsQuestions(questions.questions)
-      setLoading(false)
     }
+<<<<<<< HEAD
   }, [onGetAllFilterQuestions, setLoading, setIsQuestions, id]) // Added 'id' to the dependency array
+=======
+    setLoading(false) // Moved this line to ensure loading is set to false after processing
+  }, [setLoading, setIsQuestions, id]) // Added 'id' to the dependency array
+>>>>>>> bb2951e21cbf5c1c2a6d6af56dce323035bb7dbb
 
   useEffect(() => {
     onGetQuestions()

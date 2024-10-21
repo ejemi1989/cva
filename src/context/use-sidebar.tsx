@@ -48,7 +48,7 @@ const useSideBar = () => {
     if (chatRoom) {
       onGetCurrentMode() // This will call the memoized function
     }
-  }, [onGetCurrentMode]); // Added 'onGetCurrentMode' to dependencies
+  }, [chatRoom, onGetCurrentMode]); // Added onGetCurrentMode to the dependency array
 
   const page = pathname.split('/').pop()
   const { signOut } = useClerk()
