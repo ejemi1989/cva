@@ -163,7 +163,7 @@ export const useAnswers = (id: string) => {
     const answer = await onGetAllCustomerResponses(id);
     setLoading(false);
     return answer;
-  }, []); // Removed 'id' from dependencies
+  }, [id]); // Added id to the dependency array
 
   useEffect(() => {
     onGetCustomerAnswers(/* pass the required argument here */); // Provide the necessary argument
@@ -195,3 +195,4 @@ export const useEditEmail = (id: string) => {
 
   return { loading, template }
 }
+
