@@ -29,7 +29,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { UploadClient } from '@uploadcare/upload-client'
 import { useTheme } from 'next-themes'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 
 const upload = new UploadClient({
@@ -165,6 +165,7 @@ export const useHelpDesk = (id: string) => {
   const [isQuestions, setIsQuestions] = useState<
     { id: string; question: string; answer: string }[]
   >([])
+
   const onSubmitQuestion = handleSubmit(async (values) => {
     setLoading(true)
     const question = await onCreateHelpDeskQuestion(
@@ -183,18 +184,19 @@ export const useHelpDesk = (id: string) => {
     }
   })
 
-  const onGetQuestions = async () => {
+  // Wrap onGetQuestions in useCallback
+  const onGetQuestions = useCallback(async () => {
     setLoading(true)
     const questions = await onGetAllHelpDeskQuestions(id)
     if (questions) {
       setIsQuestions(questions.questions)
       setLoading(false)
     }
-  }
+  }, [id]) // Add `id` as a dependency
 
   useEffect(() => {
     onGetQuestions()
-  }, [onGetQuestions]); // Added 'onGetQuestions' to dependencies
+  }, [onGetQuestions]); // Use onGetQuestions in the dependency array
 
   return {
     register,
@@ -234,18 +236,18 @@ export const useFilterQuestions = (id: string) => {
     }
   })
 
-  const onGetQuestions = async () => {
+  const onGetQuestions = useCallback(async () => {
     setLoading(true)
     const questions = await onGetAllFilterQuestions(id)
     if (questions) {
       setIsQuestions(questions.questions)
       setLoading(false)
     }
-  }
+  }, [id]) // Add `id` to the dependency array
 
   useEffect(() => {
     onGetQuestions()
-  }, [onGetQuestions]); // Added 'onGetQuestions' to dependencies
+  }, [onGetQuestions]); // Use onGetQuestions in the dependency array
 
   return {
     loading,
