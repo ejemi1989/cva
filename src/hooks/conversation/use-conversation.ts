@@ -180,5 +180,5 @@ export const useChatWindow = () => {
     chats,
     loading,
     chatRoom,
-  }
+  };
 }
