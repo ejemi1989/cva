@@ -117,7 +117,6 @@ export const useChatTime = (createdAt: Date, roomId: string) => {
   return { messageSentAt, urgent, onSeenChat };
 };
 
-
 export const useChatWindow = () => {
   const { chats, loading, setChats, chatRoom } = useChatContext()
   const messageWindowRef = useRef<HTMLDivElement | null>(null)
@@ -180,5 +179,5 @@ export const useChatWindow = () => {
     chats,
     loading,
     chatRoom,
-  };
+  }
 }
