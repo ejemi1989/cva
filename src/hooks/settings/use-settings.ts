@@ -165,7 +165,6 @@ export const useHelpDesk = (id: string) => {
   const [isQuestions, setIsQuestions] = useState<
     { id: string; question: string; answer: string }[]
   >([])
-
   const onSubmitQuestion = handleSubmit(async (values) => {
     setLoading(true)
     const question = await onCreateHelpDeskQuestion(
@@ -184,7 +183,6 @@ export const useHelpDesk = (id: string) => {
     }
   })
 
-  // Wrap onGetQuestions in useCallback
   const onGetQuestions = useCallback(async () => {
     setLoading(true)
     const questions = await onGetAllHelpDeskQuestions(id)
@@ -192,7 +190,7 @@ export const useHelpDesk = (id: string) => {
       setIsQuestions(questions.questions)
       setLoading(false)
     }
-  }, [id]) // Add `id` as a dependency
+  }, [setLoading, setIsQuestions, id]) // Removed 'onGetAllFilterQuestions' from the dependency array
 
   useEffect(() => {
     onGetQuestions()
@@ -241,9 +239,9 @@ export const useFilterQuestions = (id: string) => {
     const questions = await onGetAllFilterQuestions(id)
     if (questions) {
       setIsQuestions(questions.questions)
-      setLoading(false)
     }
-  }, [id]) // Add `id` to the dependency array
+    setLoading(false) // Moved this line to ensure loading is set to false after processing
+  }, [setLoading, setIsQuestions, id]) // Added 'id' to the dependency array
 
   useEffect(() => {
     onGetQuestions()
