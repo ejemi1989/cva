@@ -101,7 +101,7 @@ export const useChatTime = (createdAt: Date, roomId: string) => {
   }, [createdAt]);
 
   const onSeenChat = useCallback(async () => {
-    if (chatRoom === roomId && urgent) {
+    if (chatRoom == roomId && urgent) {
       await onViewUnReadMessages(roomId);
     }
   }, [chatRoom, roomId, urgent]);
