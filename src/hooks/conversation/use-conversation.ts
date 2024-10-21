@@ -36,6 +36,7 @@ export const useConversation = () => {
     }[]
   >([])
   const [loading, setLoading] = useState<boolean>(false)
+
   useEffect(() => {
     const search = watch(async (value) => {
       setLoading(true)
@@ -65,6 +66,7 @@ export const useConversation = () => {
       console.log(error)
     }
   }
+
   return {
     register,
     chatRooms,
@@ -74,47 +76,47 @@ export const useConversation = () => {
 }
 
 export const useChatTime = (createdAt: Date, roomId: string) => {
-  const { chatRoom } = useChatContext()
-  const [messageSentAt, setMessageSentAt] = useState<string>()
-  const [urgent, setUrgent] = useState<boolean>(false)
+  const { chatRoom } = useChatContext();
+  const [messageSentAt, setMessageSentAt] = useState<string>();
+  const [urgent, setUrgent] = useState<boolean>(false);
 
   const onSetMessageRecievedDate = useCallback(() => {
-    const dt = new Date(createdAt)
-    const current = new Date()
-    const currentDate = current.getDate()
-    const hr = dt.getHours()
-    const min = dt.getMinutes()
-    const date = dt.getDate()
-    const month = dt.getMonth()
-    const difference = currentDate - date
+    const dt = new Date(createdAt);
+    const current = new Date();
+    const currentDate = current.getDate();
+    const hr = dt.getHours();
+    const min = dt.getMinutes();
+    const date = dt.getDate();
+    const month = dt.getMonth();
+    const difference = currentDate - date;
 
     if (difference <= 0) {
-      setMessageSentAt(`${hr}:${min}${hr > 12 ? 'PM' : 'AM'}`)
+      setMessageSentAt(`${hr}:${min}${hr > 12 ? 'PM' : 'AM'}`);
       if (current.getHours() - dt.getHours() < 2) {
-        setUrgent(true)
+        setUrgent(true);
       }
     } else {
-      setMessageSentAt(`${date} ${getMonthName(month)}`)
+      setMessageSentAt(`${date} ${getMonthName(month)}`);
     }
-  }
+  }, [createdAt]);
 
   const onSeenChat = useCallback(async () => {
-    if (chatRoom == roomId && urgent) {
+    if (chatRoom === roomId && urgent) {
       await onViewUnReadMessages(roomId);
     }
-    // ... existing code ...
-  }, [chatRoom, roomId, urgent]); // Ensure dependencies are included
+  }, [chatRoom, roomId, urgent]);
 
   useEffect(() => {
-    onSeenChat()
-  }, [chatRoom, onSeenChat]); // Added onSeenChat to the dependency array
+    onSeenChat();
+  }, [chatRoom, onSeenChat]);
 
   useEffect(() => {
-    onSetMessageRecievedDate()
-  }, [onSetMessageRecievedDate]); // Added onSetMessageRecievedDate to the dependency array
+    onSetMessageRecievedDate();
+  }, [onSetMessageRecievedDate]);
 
-  return { messageSentAt, urgent, onSeenChat }
-}
+  return { messageSentAt, urgent, onSeenChat };
+};
+
 
 export const useChatWindow = () => {
   const { chats, loading, setChats, chatRoom } = useChatContext()
@@ -123,6 +125,7 @@ export const useChatWindow = () => {
     resolver: zodResolver(ChatBotMessageSchema),
     mode: 'onChange',
   })
+
   const onScrollToBottom = () => {
     messageWindowRef.current?.scroll({
       top: messageWindowRef.current.scrollHeight,
@@ -147,7 +150,7 @@ export const useChatWindow = () => {
         pusherClient.unsubscribe(chatRoom)
       }
     }
-  }, [chatRoom])
+  }, [chatRoom, setChats])
 
   const onHandleSentMessage = handleSubmit(async (values) => {
     try {
@@ -157,11 +160,7 @@ export const useChatWindow = () => {
         values.content,
         'assistant'
       )
-      //WIP: Remove this line
       if (message) {
-        //remove this
-        // setChats((prev) => [...prev, message.message[0]])
-
         await onRealTimeChat(
           chatRoom!,
           message.message[0].message,
